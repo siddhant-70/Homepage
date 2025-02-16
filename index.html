@@ -18,35 +18,12 @@
             height: 100vh;
             margin: 0;
             padding-top: 20px;
-            position: relative;
-        }
-
-        .header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            width: 90%;
-            max-width: 650px;
-            padding: 10px 0;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            color: white;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .theme-toggle:active {
-            transform: rotate(180deg);
         }
 
         h1 {
             font-size: 45px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .subtext {
@@ -63,7 +40,7 @@
             align-items: center;
             background: rgba(200, 200, 200, 0.2);
             border-radius: 35px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             width: 80%;
             max-width: 600px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
@@ -118,15 +95,41 @@
             margin-bottom: 5px;
         }
 
-        .light-mode {
-            background-color: white;
-            color: black;
+        .menu-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-overlay {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            width: 100px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .menu-overlay a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            padding: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <div class="menu-button" onclick="toggleMenu()">&#x22EE;</div>
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="#">About</a>
     </div>
     
     <h1>Google</h1>
@@ -167,14 +170,15 @@
         function openGoogleLens() {
             window.location.href = 'https://lens.google.com/';
         }
-
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const themeToggle = document.querySelector('.theme-toggle');
-            if (document.body.classList.contains('light-mode')) {
-                themeToggle.textContent = '☀️';
+        
+        function toggleMenu() {
+            var menu = document.getElementById("menuOverlay");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+                document.body.style.backdropFilter = "none";
             } else {
-                themeToggle.textContent = '🌙';
+                menu.style.display = "block";
+                document.body.style.backdropFilter = "blur(5px)";
             }
         }
     </script>
