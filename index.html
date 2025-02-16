@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Homepage</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .search-bar {
+            width: 90%;
+            max-width: 600px;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            text-align: left;
+        }
+        .shortcuts {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .shortcut {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            margin: 10px;
+            border-radius: 50%;
+            background-color: #222;
+            cursor: pointer;
+        }
+        .shortcut img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .shortcut span {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Google</div>
+        <input type="text" class="search-bar" placeholder="Search or type URL">
+        <div class="shortcuts">
+            <div class="shortcut" onclick="window.location.href='https://chat.openai.com'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                <span>ChatGPT</span>
+            </div>
+            <div class="shortcut" onclick="window.location.href='https://gemini.google.com'">
+                <img src="https://www.gstatic.com/lamda/images/gemini_favicon.png" alt="Gemini">
+                <span>Gemini</span>
+            </div>
+            <div class="shortcut" onclick="window.location.href='https://www.instagram.com'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+                <span>Instagram</span>
+            </div>
+            <div class="shortcut" onclick="window.location.href='https://www.microsoft.com'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+                <span>Microsoft</span>
+            </div>
+            <div class="shortcut" onclick="window.location.href='https://www.spotify.com'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
+                <span>Spotify</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
