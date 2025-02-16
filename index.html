@@ -5,93 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Homepage</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;700&display=swap');
+        
         body {
             background-color: #121212;
             color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
+            font-family: 'Product Sans', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
+            margin: 0;
+            padding-top: 20px;
         }
-        .logo {
-            font-size: 48px;
+
+        h1 {
+            font-size: 60px;
             font-weight: bold;
             margin-bottom: 20px;
         }
-        .search-bar {
-            width: 90%;
-            max-width: 600px;
-            padding: 12px;
-            border-radius: 25px;
-            border: none;
-            background-color: #333;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            text-align: left;
+
+        .subtext {
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #4285F4, #EA4335);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 60px;
         }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(200, 200, 200, 0.2);
+            border-radius: 35px;
+            padding: 12px 20px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .search-bar {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 18px;
+            outline: none;
+            padding: 10px;
+        }
+
+        .search-icon {
+            width: 28px;
+            height: 28px;
+            margin-left: 12px;
+            cursor: pointer;
+        }
+
+        .shortcuts-wrapper {
+            display: flex;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 20px;
+            width: 80%;
+            max-width: 650px;
+        }
+
         .shortcuts {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
+            gap: 20px;
         }
+
         .shortcut {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 70px;
-            height: 70px;
-            margin: 10px;
-            border-radius: 50%;
-            background-color: #222;
-            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
         }
+
         .shortcut img {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-        }
-        .shortcut span {
-            font-size: 12px;
-            margin-top: 5px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">Google</div>
+    <h1>Google</h1>
+    <p class="subtext">Hello, Siddhant</p>
+    
+    <div class="search-container">
         <input type="text" class="search-bar" placeholder="Search or type URL">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Google_mic.svg" class="search-icon" onclick="startVoiceSearch()">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Google_Lens_Icon.svg" class="search-icon" onclick="openGoogleLens()">
+    </div>
+    
+    <div class="shortcuts-wrapper">
         <div class="shortcuts">
-            <div class="shortcut" onclick="window.location.href='https://chat.openai.com'">
+            <a href="https://chat.openai.com" class="shortcut">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
-                <span>ChatGPT</span>
-            </div>
-            <div class="shortcut" onclick="window.location.href='https://gemini.google.com'">
-                <img src="https://www.gstatic.com/lamda/images/gemini_favicon.png" alt="Gemini">
-                <span>Gemini</span>
-            </div>
-            <div class="shortcut" onclick="window.location.href='https://www.instagram.com'">
+                ChatGPT
+            </a>
+            <a href="https://gemini.google.com" class="shortcut">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Google_Gemini_Icon.svg" alt="Gemini">
+                Gemini
+            </a>
+            <a href="https://www.facebook.com" class="shortcut">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+                Facebook
+            </a>
+            <a href="https://www.instagram.com" class="shortcut">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-                <span>Instagram</span>
-            </div>
-            <div class="shortcut" onclick="window.location.href='https://www.microsoft.com'">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
-                <span>Microsoft</span>
-            </div>
-            <div class="shortcut" onclick="window.location.href='https://www.spotify.com'">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
-                <span>Spotify</span>
-            </div>
+                Instagram
+            </a>
         </div>
     </div>
+    
+    <script>
+        function startVoiceSearch() {
+            window.location.href = 'https://www.google.com/search?q=voice+search';
+        }
+        
+        function openGoogleLens() {
+            window.location.href = 'https://lens.google.com/';
+        }
+    </script>
 </body>
 </html>
