@@ -18,12 +18,14 @@
             height: 100vh;
             margin: 0;
             padding-top: 20px;
+            overflow: hidden;
         }
 
         h1 {
             font-size: 45px;
             font-weight: bold;
             margin-bottom: 10px;
+            transition: transform 0.5s ease;
         }
 
         .subtext {
@@ -33,6 +35,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 35px;
+            transition: transform 0.5s ease;
         }
 
         .search-container {
@@ -40,33 +43,21 @@
             align-items: center;
             background: rgba(200, 200, 200, 0.2);
             border-radius: 35px;
-            padding: 12px 20px;
+            padding: 15px 20px;
             width: 80%;
             max-width: 600px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
             margin-bottom: 20px;
-            position: relative;
+            transition: transform 0.5s ease;
         }
 
         .search-bar {
-            flex-grow: 1;
+            flex: 1;
+            background: none;
             border: none;
             outline: none;
-            background: transparent;
             color: white;
             font-size: 18px;
-        }
-
-        .search-icons {
-            display: flex;
-            gap: 10px;
-            margin-left: 10px;
-        }
-
-        .search-icons img {
-            width: 26px;
-            height: 26px;
-            cursor: pointer;
         }
 
         .shortcuts {
@@ -75,6 +66,7 @@
             justify-content: center;
             gap: 20px;
             padding: 20px;
+            transition: opacity 0.5s ease;
         }
 
         .shortcut {
@@ -87,23 +79,33 @@
         }
 
         .shortcut img {
-            width: 39px;
-            height: 39px;
+            width: 50px;
+            height: 50px;
             margin-bottom: 5px;
-            border-radius: 39%;
+            border-radius: 50%;
+        }
+
+        .search-container.active {
+            transform: translateY(-100px) scale(1.1);
+        }
+
+        .shortcuts.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .subtext.hidden, h1.hidden {
+            transform: translateY(-50px);
+            opacity: 0;
         }
     </style>
 </head>
 <body>
-    <h1>Google</h1>
-    <p class="subtext">Hello, Siddhant</p>
+    <h1 id="title">Google</h1>
+    <p class="subtext" id="subtext">Hello, Siddhant</p>
     
-    <div class="search-container">
-        <input type="text" class="search-bar" id="searchInput" placeholder="Search or type URL" onkeydown="handleSearch(event)">
-        <div class="search-icons">
-            <img src="https://www.gstatic.com/images/branding/googlemic/2x/googlemic_color_24dp.png" alt="Voice Search" onclick="openVoiceSearch()">
-            <img src="https://www.gstatic.com/images/icons/material/system_gm/2x/google_lens_gm_blue_24dp.png" alt="Google Lens" onclick="openGoogleLens()">
-        </div>
+    <div class="search-container" id="searchContainer">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search or type URL" onfocus="animateSearch()" onkeydown="handleSearch(event)">
     </div>
     
     <div class="shortcuts" id="shortcuts"></div>
@@ -118,12 +120,11 @@
             }
         }
 
-        function openVoiceSearch() {
-            window.location.href = 'chrome://voicesearch';
-        }
-
-        function openGoogleLens() {
-            window.location.href = 'https://lens.google.com';
+        function animateSearch() {
+            document.getElementById("searchContainer").classList.add("active");
+            document.getElementById("shortcuts").classList.add("hidden");
+            document.getElementById("title").classList.add("hidden");
+            document.getElementById("subtext").classList.add("hidden");
         }
 
         function loadShortcuts() {
