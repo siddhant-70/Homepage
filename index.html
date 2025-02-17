@@ -32,7 +32,7 @@
             background: linear-gradient(90deg, #4285F4, #EA4335);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
 
         .search-container {
@@ -44,40 +44,37 @@
             width: 80%;
             max-width: 600px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .search-bar {
-            flex: 1;
+            flex-grow: 1;
             border: none;
+            outline: none;
             background: transparent;
             color: white;
-            font-size: 18px;
-            outline: none;
-            padding: 8px;
+            font-size: 16px;
         }
 
-        .search-icon {
-            width: 28px;
-            height: 28px;
-            margin-left: 12px;
-            cursor: pointer;
-        }
-
-        .shortcuts-wrapper {
+        .search-icons {
             display: flex;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 20px;
-            width: 80%;
-            max-width: 650px;
+            gap: 10px;
+            margin-left: 10px;
+        }
+
+        .search-icons img {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
         }
 
         .shortcuts {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
+            padding: 20px;
         }
 
         .shortcut {
@@ -90,97 +87,64 @@
         }
 
         .shortcut img {
-            width: 35px;
-            height: 35px;
+            width: 50px;
+            height: 50px;
             margin-bottom: 5px;
-        }
-
-        .menu-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .menu-overlay {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 10px;
-            width: 100px;
-            text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .menu-overlay a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            display: block;
-            padding: 5px;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
-    <div class="menu-button" onclick="toggleMenu()">&#x22EE;</div>
-    <div class="menu-overlay" id="menuOverlay">
-        <a href="#">About</a>
-    </div>
-    
     <h1>Google</h1>
     <p class="subtext">Hello, Siddhant</p>
     
     <div class="search-container">
-        <input type="text" class="search-bar" placeholder="Search or type URL">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Google_mic.svg" class="search-icon" onclick="startVoiceSearch()">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Google_Lens_Icon.svg" class="search-icon" onclick="openGoogleLens()">
-    </div>
-    
-    <div class="shortcuts-wrapper">
-        <div class="shortcuts">
-            <a href="https://chat.openai.com" class="shortcut">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
-                ChatGPT
-            </a>
-            <a href="https://gemini.google.com" class="shortcut">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Google_Gemini_Icon.svg" alt="Gemini">
-                Gemini
-            </a>
-            <a href="https://www.facebook.com" class="shortcut">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
-                Facebook
-            </a>
-            <a href="https://www.instagram.com" class="shortcut">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-                Instagram
-            </a>
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search or type URL" onkeydown="handleSearch(event)">
+        <div class="search-icons">
+            <img src="https://www.gstatic.com/images/branding/googlemic/2x/googlemic_color_24dp.png" alt="Voice Search" onclick="openVoiceSearch()">
+            <img src="https://www.gstatic.com/images/icons/material/system_gm/2x/google_lens_gm_blue_24dp.png" alt="Google Lens" onclick="openGoogleLens()">
         </div>
     </div>
     
+    <div class="shortcuts" id="shortcuts"></div>
+
     <script>
-        function startVoiceSearch() {
-            window.location.href = 'https://www.google.com/search?q=voice+search';
-        }
-        
-        function openGoogleLens() {
-            window.location.href = 'https://lens.google.com/';
-        }
-        
-        function toggleMenu() {
-            var menu = document.getElementById("menuOverlay");
-            if (menu.style.display === "block") {
-                menu.style.display = "none";
-                document.body.style.backdropFilter = "none";
-            } else {
-                menu.style.display = "block";
-                document.body.style.backdropFilter = "blur(5px)";
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                const query = document.getElementById("searchInput").value;
+                if (query) {
+                    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                }
             }
         }
+
+        function openVoiceSearch() {
+            window.location.href = 'chrome://voicesearch';
+        }
+
+        function openGoogleLens() {
+            window.location.href = 'https://lens.google.com';
+        }
+
+        function loadShortcuts() {
+            const defaultShortcuts = [
+                { name: "ChatGPT", url: "https://chat.openai.com", icon: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" },
+                { name: "Gmail", url: "https://mail.google.com", icon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" },
+                { name: "YouTube", url: "https://www.youtube.com", icon: "https://www.youtube.com/s/desktop/dfa2d17b/img/favicon.ico" },
+                { name: "Drive", url: "https://drive.google.com", icon: "https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png" }
+            ];
+
+            const container = document.getElementById('shortcuts');
+            defaultShortcuts.forEach(shortcut => {
+                const link = document.createElement('a');
+                link.href = shortcut.url;
+                link.classList.add('shortcut');
+                link.innerHTML = `<img src="${shortcut.icon}" alt="${shortcut.name}"><br>${shortcut.name}`;
+                container.appendChild(link);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", loadShortcuts);
     </script>
 </body>
 </html>
