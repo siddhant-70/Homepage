@@ -18,14 +18,26 @@
             height: 100vh;
             margin: 0;
             padding-top: 20px;
-            overflow: hidden;
+            transition: filter 0.3s ease-in-out;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            transition: transform 0.3s ease-in-out;
+            position: relative;
         }
 
         h1 {
             font-size: 45px;
             font-weight: bold;
             margin-bottom: 10px;
-            transition: transform 0.5s ease;
+            transition: transform 0.3s ease-in-out, scale 0.3s ease-in-out;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
         }
 
         .subtext {
@@ -35,7 +47,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 35px;
-            transition: transform 0.5s ease;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .search-container {
@@ -43,12 +55,13 @@
             align-items: center;
             background: rgba(200, 200, 200, 0.2);
             border-radius: 35px;
-            padding: 15px 20px;
+            padding: 20px 25px;
             width: 80%;
             max-width: 600px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
             margin-bottom: 20px;
-            transition: transform 0.5s ease;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            z-index: 1; 
         }
 
         .search-bar {
@@ -57,95 +70,136 @@
             border: none;
             outline: none;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
         }
 
-        .shortcuts {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+        .blur-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 0;
+        }
+
+        .search-options {
+            position: absolute;
+            top: 100px;
+            background: rgba(40, 40, 40, 0.8);
             padding: 20px;
-            transition: opacity 0.5s ease;
-        }
-
-        .shortcut {
-            display: flex;
+            border-radius: 15px;
+            display: none;
             flex-direction: column;
-            align-items: center;
-            text-decoration: none;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 2;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-options button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
             color: white;
-            font-size: 14px;
+            font-weight: bold;
+            font-size: 17px;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
         }
 
-        .shortcut img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 5px;
-            border-radius: 50%;
-        }
-
-        .search-container.active {
-            transform: translateY(-100px) scale(1.1);
-        }
-
-        .shortcuts.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .subtext.hidden, h1.hidden {
-            transform: translateY(-50px);
-            opacity: 0;
+        .search-options button:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
 <body>
-    <h1 id="title">Google</h1>
-    <p class="subtext" id="subtext">Hello, Siddhant</p>
-    
-    <div class="search-container" id="searchContainer">
-        <input type="text" class="search-bar" id="searchInput" placeholder="Search or type URL" onfocus="animateSearch()" onkeydown="handleSearch(event)">
+    <div class="blur-bg" id="blurBgSearch" onclick="resetView()"></div>
+    <div class="blur-bg" id="blurBgTitle" onclick="resetView()"></div>
+    <div class="container" id="container">
+        <h1 id="googleTitle" onclick="toggleSearchOptions()">Google</h1>
+        <div class="search-options" id="searchOptions">
+            <button onclick="setSearchEngine('Google')">Google</button>
+            <button onclick="setSearchEngine('Bing')">Bing</button>
+            <button onclick="setSearchEngine('DuckDuckGo')">DuckDuckGo</button>
+            <button onclick="setSearchEngine('Brave')">Brave</button>
+            <button onclick="setSearchEngine('Startpage')">Startpage</button>
+        </div>
+        <p class="subtext" id="helloText">Hello, Siddhant</p>
+        
+        <div class="search-container" id="searchContainer">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search or type URL" onfocus="animateSearchBar()" onkeydown="handleSearch(event)">
+        </div>
     </div>
     
-    <div class="shortcuts" id="shortcuts"></div>
-
     <script>
+        let selectedEngine = 'Google';
+
         function handleSearch(event) {
             if (event.key === 'Enter') {
                 const query = document.getElementById("searchInput").value;
                 if (query) {
-                    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                    const engines = {
+                        'Google': 'https://www.google.com/search?q=',
+                        'Bing': 'https://www.bing.com/search?q=',
+                        'DuckDuckGo': 'https://duckduckgo.com/?q=',
+                        'Brave': 'https://search.brave.com/search?q=',
+                        'Startpage': 'https://www.startpage.com/do/search?q='
+                    };
+                    window.location.href = engines[selectedEngine] + encodeURIComponent(query);
                 }
             }
         }
 
-        function animateSearch() {
-            document.getElementById("searchContainer").classList.add("active");
-            document.getElementById("shortcuts").classList.add("hidden");
-            document.getElementById("title").classList.add("hidden");
-            document.getElementById("subtext").classList.add("hidden");
+        function animateSearchBar() {
+            document.getElementById("googleTitle").style.transform = "translateY(-20px)";
+            document.getElementById("searchContainer").style.transform = "translateY(-60px)";
+            document.getElementById("helloText").style.opacity = "0";
+            document.getElementById("blurBgSearch").style.display = "block";
+            document.getElementById("blurBgSearch").style.backdropFilter = "blur(5px)";
+            document.getElementById("searchContainer").style.zIndex = "3";
         }
 
-        function loadShortcuts() {
-            const defaultShortcuts = [
-                { name: "ChatGPT", url: "https://chat.openai.com", icon: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" },
-                { name: "Gmail", url: "https://mail.google.com", icon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" },
-                { name: "YouTube", url: "https://www.youtube.com", icon: "https://www.youtube.com/s/desktop/dfa2d17b/img/favicon.ico" },
-                { name: "Drive", url: "https://drive.google.com", icon: "https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png" }
-            ];
-
-            const container = document.getElementById('shortcuts');
-            defaultShortcuts.forEach(shortcut => {
-                const link = document.createElement('a');
-                link.href = shortcut.url;
-                link.classList.add('shortcut');
-                link.innerHTML = `<img src="${shortcut.icon}" alt="${shortcut.name}"><br>${shortcut.name}`;
-                container.appendChild(link);
-            });
+        function resetView() {
+            document.getElementById("googleTitle").style.transform = "translateY(0) scale(1)";
+            document.getElementById("searchContainer").style.transform = "translateY(0)";
+            document.getElementById("helloText").style.opacity = "1";
+            document.getElementById("blurBgSearch").style.display = "none";
+            document.getElementById("blurBgTitle").style.display = "none";
+            document.getElementById("searchOptions").style.opacity = "0";
+            document.getElementById("searchOptions").style.transform = "translateY(-10px)";
+            document.getElementById("blurBgSearch").style.backdropFilter = "none";
+            document.getElementById("blurBgTitle").style.backdropFilter = "none";
+            setTimeout(() => {
+                document.getElementById("searchOptions").style.display = "none";
+                document.getElementById("searchContainer").style.opacity = "1";
+            }, 300);
         }
 
-        document.addEventListener("DOMContentLoaded", loadShortcuts);
+        function toggleSearchOptions() {
+            const options = document.getElementById("searchOptions");
+            const title = document.getElementById("googleTitle");
+            if (options.style.display === "flex") {
+                resetView();
+            } else {
+                title.style.transform = "scale(1.1)";
+                options.style.display = "flex";
+                options.style.opacity = "1";
+                options.style.transform = "translateY(0px)";
+                document.getElementById("blurBgTitle").style.display = "block";
+                document.getElementById("blurBgTitle").style.backdropFilter = "blur(5px)";
+                document.getElementById("searchContainer").style.opacity = "0";
+            }
+        }
+
+        function setSearchEngine(engine) {
+            selectedEngine = engine;
+            document.getElementById("googleTitle").textContent = engine;
+            resetView();
+        }
     </script>
 </body>
 </html>
