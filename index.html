@@ -5,20 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Homepage</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;700&family=Inter:wght@400;600&display=swap');
         
+        :root {
+            --primary-bg: #121212;
+            --search-bg: rgba(200, 200, 200, 0.2);
+            --options-bg: rgba(40, 40, 40, 0.8);
+            --text-color: white;
+            --animation-timing: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #121212;
-            color: white;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
             font-family: 'Product Sans', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            padding-top: 20px;
-            transition: filter 0.3s ease-in-out;
+            padding: 20px 10px;
+            transition: filter var(--animation-timing) ease-in-out;
+            overflow-x: hidden;
         }
 
         .container {
@@ -26,42 +40,72 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            transition: transform 0.3s ease-in-out;
+            transition: transform var(--animation-timing) ease-in-out;
             position: relative;
+            animation: slideIn 0.6s ease-out;
         }
 
         h1 {
             font-size: 45px;
             font-weight: bold;
             margin-bottom: 10px;
-            transition: transform 0.3s ease-in-out, scale 0.3s ease-in-out;
+            transition: all var(--animation-timing) cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             z-index: 2;
         }
 
+        h1:hover {
+            transform: scale(1.05);
+        }
+
         .subtext {
             font-size: 16px;
             font-weight: bold;
-            background: linear-gradient(90deg, #4285F4, #EA4335);
+            background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 300% 100%;
+            animation: gradientShift 6s infinite linear;
             margin-bottom: 35px;
-            transition: opacity 0.3s ease-in-out;
+            transition: all var(--animation-timing) ease-in-out;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
 
         .search-container {
             display: flex;
             align-items: center;
-            background: rgba(200, 200, 200, 0.2);
+            background: var(--search-bg);
             border-radius: 35px;
             padding: 20px 25px;
             width: 80%;
             max-width: 600px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            z-index: 1; 
+            margin-bottom: 40px;
+            transition: all var(--animation-timing) cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4285F4, #EA4335);
+            transition: all var(--animation-timing) ease-in-out;
+            transform: translateX(-50%);
+        }
+
+        .search-container:focus-within::after {
+            width: 100%;
         }
 
         .search-bar {
@@ -69,8 +113,264 @@
             background: none;
             border: none;
             outline: none;
-            color: white;
+            color: var(--text-color);
             font-size: 16px;
+            font-family: 'Product Sans', sans-serif;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            transition: color var(--animation-timing) ease;
+        }
+
+        .search-bar:focus::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Shortcut Styles */
+        .wrapper {
+            background: rgba(37, 37, 37, 0.7);
+            border-radius: 28px;
+            padding: 15px 0px;
+            display: flex;
+            flex-direction: column;
+            width: 95%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin-bottom: 16px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .container-shortcuts {
+            display: flex;
+            gap: 16px;
+            padding: 5px 24px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+            padding-right: 40px;
+        }
+
+        .container-shortcuts::-webkit-scrollbar {
+            display: none;
+        }
+
+        .shortcut {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 60px;
+            scroll-snap-align: start;
+        }
+
+        .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: rgba(45, 45, 45, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            margin: 2px;
+        }
+
+        .icon-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .icon-wrapper img {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+        }
+
+        .shortcut span {
+            color: #9FA6B2;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .title {
+            font-size: 15px;
+            font-weight: 600;
+            text-align: left;
+            margin-bottom: 8px;
+            margin-left: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: bold;
+            letter-spacing: 1px;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .title:hover {
+            opacity: 0.8;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1001;
+        }
+
+        .modal-title {
+            font-size: 34px;
+            font-weight: 700;
+            color: white;
+            text-transform: capitalize;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin-bottom: 20px;
+            z-index: 1003;
+        }
+
+        .modal-content {
+            background: rgba(37, 37, 37, 0.95);
+            border-radius: 28px;
+            padding: 5px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 45vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1002;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal.active .modal-backdrop {
+            opacity: 1;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 10px;
+            justify-items: center;
+        }
+
+        @media (min-width: 600px) {
+            .grid-container {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .modal .shortcut {
+            animation: fadeInScale 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Search Options */
+        .search-options {
+            position: absolute;
+            top: 100px;
+            background: var(--options-bg);
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            transition: all var(--animation-timing) cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(-20px) scale(0.95);
+            opacity: 0;
+        }
+
+        .search-options.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .search-options button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-color);
+            font-weight: bold;
+            font-size: 17px;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all var(--animation-timing) ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-options button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
         .blur-bg {
@@ -79,46 +379,60 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
             display: none;
-            z-index: 0;
-        }
-
-        .search-options {
-            position: absolute;
-            top: 100px;
-            background: rgba(40, 40, 40, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-            display: none;
-            flex-direction: column;
-            gap: 15px;
+            z-index: 2;  /* Changed to be above shortcuts but below search */
+            transition: all var(--animation-timing) ease-in-out;
             backdrop-filter: blur(10px);
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-            z-index: 2;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
         }
 
-        .search-options button {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            font-weight: bold;
-            font-size: 17px;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
+        .blur-bg.active {
+            opacity: 1;
+            pointer-events: auto;  /* Enable pointer events when active */
         }
 
-        .search-options button:hover {
-            background: rgba(255, 255, 255, 0.2);
+        /* Add styles for the search focus state */
+        .search-focus .wrapper {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;  /* Disable interaction with shortcuts */
+        }
+
+        .search-focus .container {
+            z-index: 5;  /* Ensure search container stays above blur */
+        }
+
+        /* Animation for search bar focus */
+        @keyframes searchFocus {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-60px);
+                opacity: 1;
+            }
+        }
+
+        /* Ensure search container and title stay visible */
+        .search-focus #searchContainer,
+        .search-focus #googleTitle {
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Add transition for smooth animation */
+        .wrapper {
+            transition: all 0.3s ease-in-out;
         }
     </style>
 </head>
 <body>
     <div class="blur-bg" id="blurBgSearch" onclick="resetView()"></div>
     <div class="blur-bg" id="blurBgTitle" onclick="resetView()"></div>
+    
     <div class="container" id="container">
         <h1 id="googleTitle" onclick="toggleSearchOptions()">Google</h1>
         <div class="search-options" id="searchOptions">
@@ -133,8 +447,490 @@
         <div class="search-container" id="searchContainer">
             <input type="text" class="search-bar" id="searchInput" placeholder="Search or type URL" onfocus="animateSearchBar()" onkeydown="handleSearch(event)">
         </div>
+
+        <!-- Tools Block -->
+        <div class="wrapper">
+            <div class="title" onclick="openModal('tools')">Tools</div>
+            <div class="container-shortcuts" id="tools-container">
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <div class="shortcut">
+                    <a href="https://chat.openai.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com" alt="ChatGPT">
+                        </div>
+                        <span>ChatGPT</span>
+                    </a>
+                </div>
+                <!-- Add more tools shortcuts as needed -->
+            </div>
+        </div>
+
+        <!-- Social Block -->
+        <div class="wrapper">
+            <div class="title" onclick="openModal('social')">Social</div>
+            <div class="container-shortcuts" id="social-container">
+                <div class="shortcut">
+                    <a href="https://instagram.com">
+                        <div class="icon-wrapper">
+                            <img src="https://www.google.com/s2/favicons?sz=64&domain=instagram.com" alt="Instagram">
+                        </div>
+                        <span>Instagram</span>
+                    </a>
+                </div>
+                <!-- Add more social shortcuts as needed -->
+            </div>
+        </div>
     </div>
-    
+
+    <!-- Modal for expanded view -->
+    <div class="modal" id="shortcut-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-content">
+            <div class="grid-container" id="modal-grid">
+                <!-- Shortcuts will be cloned here -->
+            </div>
+        </div>
+    </div>
     <script>
         let selectedEngine = 'Google';
 
@@ -149,7 +945,15 @@
                         'Brave': 'https://search.brave.com/search?q=',
                         'Startpage': 'https://www.startpage.com/do/search?q='
                     };
-                    window.location.href = engines[selectedEngine] + encodeURIComponent(query);
+                    
+                    // Animate the search container before navigation
+                    const searchContainer = document.getElementById("searchContainer");
+                    searchContainer.style.transform = "scale(0.95)";
+                    searchContainer.style.opacity = "0";
+                    
+                    setTimeout(() => {
+                        window.location.href = engines[selectedEngine] + encodeURIComponent(query);
+                    }, 300);
                 }
             }
         }
@@ -159,47 +963,228 @@
             document.getElementById("searchContainer").style.transform = "translateY(-60px)";
             document.getElementById("helloText").style.opacity = "0";
             document.getElementById("blurBgSearch").style.display = "block";
-            document.getElementById("blurBgSearch").style.backdropFilter = "blur(5px)";
-            document.getElementById("searchContainer").style.zIndex = "3";
-        }
-
-        function resetView() {
-            document.getElementById("googleTitle").style.transform = "translateY(0) scale(1)";
-            document.getElementById("searchContainer").style.transform = "translateY(0)";
-            document.getElementById("helloText").style.opacity = "1";
-            document.getElementById("blurBgSearch").style.display = "none";
-            document.getElementById("blurBgTitle").style.display = "none";
-            document.getElementById("searchOptions").style.opacity = "0";
-            document.getElementById("searchOptions").style.transform = "translateY(-10px)";
-            document.getElementById("blurBgSearch").style.backdropFilter = "none";
-            document.getElementById("blurBgTitle").style.backdropFilter = "none";
             setTimeout(() => {
-                document.getElementById("searchOptions").style.display = "none";
-                document.getElementById("searchContainer").style.opacity = "1";
-            }, 300);
+                document.getElementById("blurBgSearch").classList.add("active");
+            }, 10);
+            document.getElementById("searchContainer").style.zIndex = "3";
+            document.getElementById("searchContainer").style.boxShadow = "0px 8px 20px rgba(255, 255, 255, 0.15)";
+
+            // Ensure shortcuts stay visible but slightly faded
+            const wrappers = document.querySelectorAll('.wrapper');
+            wrappers.forEach(wrapper => {
+                wrapper.style.opacity = "0.5";
+                wrapper.style.transform = "translateY(-30px)";
+                wrapper.style.transition = "all var(--animation-timing) ease-in-out";
+            });
         }
 
         function toggleSearchOptions() {
             const options = document.getElementById("searchOptions");
             const title = document.getElementById("googleTitle");
-            if (options.style.display === "flex") {
+            const blurBg = document.getElementById("blurBgTitle");
+    
+            if (options.classList.contains("active")) {
+                // If options are active, reset the view
                 resetView();
             } else {
+                // If options are not active, show them
                 title.style.transform = "scale(1.1)";
                 options.style.display = "flex";
-                options.style.opacity = "1";
-                options.style.transform = "translateY(0px)";
-                document.getElementById("blurBgTitle").style.display = "block";
-                document.getElementById("blurBgTitle").style.backdropFilter = "blur(5px)";
-                document.getElementById("searchContainer").style.opacity = "0";
+                blurBg.style.display = "block";
+                
+                // Use setTimeout to ensure display: flex is applied before animations
+                setTimeout(() => {
+                    options.classList.add("active");
+                    blurBg.classList.add("active");
+                }, 10);
+                
+                document.getElementById("searchContainer").style.opacity = "0.5";
+
+                // Fade shortcuts when showing search options
+                const wrappers = document.querySelectorAll('.wrapper');
+                wrappers.forEach(wrapper => {
+                    wrapper.style.opacity = "0.5";
+                });
             }
         }
-
         function setSearchEngine(engine) {
             selectedEngine = engine;
-            document.getElementById("googleTitle").textContent = engine;
+            const title = document.getElementById("googleTitle");
+            
+            // Animate the title change
+            title.style.transform = "scale(0.9)";
+            title.style.opacity = "0";
+            
+            setTimeout(() => {
+                title.textContent = engine;
+                title.style.transform = "scale(1.1)";
+                title.style.opacity = "1";
+                
+                setTimeout(() => {
+                    title.style.transform = "scale(1)";
+                }, 150);
+            }, 150);
+            
             resetView();
         }
+
+        // Shortcut Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById('shortcut-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalGrid = document.getElementById('modal-grid');
+            const container = document.getElementById(`${type}-container`);
+            
+            // Clear previous content
+            modalGrid.innerHTML = '';
+            
+            // Set title
+            modalTitle.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+            
+            // Clone shortcuts into grid with staggered animation
+            const shortcuts = container.querySelectorAll('.shortcut');
+            shortcuts.forEach((shortcut, index) => {
+                const clone = shortcut.cloneNode(true);
+                clone.style.animationDelay = `${index * 0.05}s`;
+                modalGrid.appendChild(clone);
+            });
+            
+            // Show modal with animation
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Blur the main content when modal is open
+            document.getElementById('container').style.filter = 'blur(5px)';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('shortcut-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Remove blur from main content
+            document.getElementById('container').style.filter = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('shortcut-modal').addEventListener('click', function(e) {
+            if (e.target === this || e.target.classList.contains('modal-backdrop')) {
+                closeModal();
+            }
+        });
+
+        // Add initial animation class to container
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('container').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('container').style.opacity = '1';
+            }, 100);
+        });
+        function animateSearchBar() {
+            const searchContainer = document.getElementById("searchContainer");
+            const blurBg = document.getElementById("blurBgSearch");
+            
+            // Animate search elements
+            document.getElementById("googleTitle").style.transform = "translateY(-20px)";
+            searchContainer.style.transform = "translateY(-60px)";
+            document.getElementById("helloText").style.opacity = "0";
+            
+            // Show and activate blur background
+            blurBg.style.display = "block";
+            setTimeout(() => {
+                blurBg.classList.add("active");
+            }, 10);
+
+            // Enhance search container
+            searchContainer.style.zIndex = "10";
+            searchContainer.style.boxShadow = "0px 8px 20px rgba(255, 255, 255, 0.15)";
+            
+            // Fade shortcuts but keep them interactive
+            const wrappers = document.querySelectorAll('.wrapper');
+            wrappers.forEach(wrapper => {
+                wrapper.style.opacity = "0.5";
+                wrapper.style.transform = "translateY(-30px)";
+                // Remove this line to keep shortcuts interactive
+                // wrapper.style.pointerEvents = "none";
+            });
+        }
+
+        function resetView() {
+            const options = document.getElementById("searchOptions");
+            const title = document.getElementById("googleTitle");
+            const searchContainer = document.getElementById("searchContainer");
+            
+            // Reset title transform
+            title.style.transform = "translateY(0) scale(1)";
+            
+            // Reset search container
+            searchContainer.style.transform = "translateY(0)";
+            searchContainer.style.zIndex = "1"; // Reset z-index
+            document.getElementById("helloText").style.opacity = "1";
+            
+            // Remove active classes
+            options.classList.remove("active");
+            document.getElementById("blurBgSearch").classList.remove("active");
+            document.getElementById("blurBgTitle").classList.remove("active");
+            
+            // Reset shortcuts visibility
+            const wrappers = document.querySelectorAll('.wrapper');
+            wrappers.forEach(wrapper => {
+                wrapper.style.opacity = "1";
+                wrapper.style.transform = "translateY(0)";
+                wrapper.style.pointerEvents = "auto"; // Ensure shortcuts are interactive
+            });
+            
+            // Use setTimeout to hide elements after transition
+            setTimeout(() => {
+                document.getElementById("blurBgSearch").style.display = "none";
+                document.getElementById("blurBgTitle").style.display = "none";
+                options.style.display = "none";
+                searchContainer.style.opacity = "1";
+                searchContainer.style.boxShadow = "0px 4px 10px rgba(255, 255, 255, 0.1)";
+            }, 300);
+        }
+
+        // Modified click event listener
+        document.addEventListener('click', (e) => {
+            const searchContainer = document.getElementById("searchContainer");
+            const searchInput = document.getElementById("searchInput");
+            const searchBg = document.getElementById("blurBgSearch");
+            
+            // Check if click is outside search area
+            if (!searchContainer.contains(e.target) && 
+                !searchInput.contains(e.target) && 
+                searchBg.classList.contains("active")) {
+                
+                // Reset search bar state
+                document.getElementById("googleTitle").style.transform = "translateY(0)";
+                searchContainer.style.transform = "translateY(0)";
+                searchContainer.style.zIndex = "1"; // Reset z-index
+                document.getElementById("helloText").style.opacity = "1";
+                
+                // Remove blur effect
+                searchBg.classList.remove("active");
+                setTimeout(() => {
+                    searchBg.style.display = "none";
+                }, 300);
+                
+                // Reset search container styles
+                searchContainer.style.boxShadow = "0px 4px 10px rgba(255, 255, 255, 0.1)";
+                
+                // Reset wrapper styles while maintaining interactivity
+                const wrappers = document.querySelectorAll('.wrapper');
+                wrappers.forEach(wrapper => {
+                    wrapper.style.opacity = "1";
+                    wrapper.style.transform = "translateY(0)";
+                    wrapper.style.pointerEvents = "auto";
+                });
+                
+                // Remove focus from search input
+                searchInput.blur();
+            }
+        });
+
+        // Previous modal-related functions remain the same
     </script>
 </body>
 </html>
