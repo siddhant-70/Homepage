@@ -6,6 +6,11 @@
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com"
     },
     {
+      "name": "Claude AI",
+      "url": "https://claude.ai/new",
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=claude.ai"
+    },
+    {
       "name": "ChatGPT",
       "url": "https://chat.openai.com",
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com"
