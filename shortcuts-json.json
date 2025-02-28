@@ -1,0 +1,21 @@
+{
+  "tools": [
+    {
+      "name": "ChatGPT",
+      "url": "https://chat.openai.com",
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com"
+    },
+    {
+      "name": "ChatGPT",
+      "url": "https://chat.openai.com",
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=chat.openai.com"
+    }
+  ],
+  "social": [
+    {
+      "name": "Instagram",
+      "url": "https://instagram.com",
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=instagram.com"
+    }
+  ]
+}
