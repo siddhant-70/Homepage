@@ -1062,7 +1062,7 @@
         setupSearchEvents();
     
         function loadShortcuts() {
-          fetch('shortcuts.json')
+          fetch('https://siddhant-70.github.io/Homepage/shortcuts.json')
             .then(response => response.json())
             .then(data => {
               Object.keys(data).forEach(category => {
