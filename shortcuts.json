@@ -217,6 +217,11 @@
       "name": "AccuWeather",
       "url": "https://accuweather.com",
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=accuweather.com"
+    },
+    {
+      "name": "Drive",
+      "url": "https://drive.google.com",
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=drive.google.com"
     }
   ]
 }
