@@ -1137,7 +1137,10 @@ Replace "rename" with your desired container name.
             ]
           };
 
-          fetch('shortcuts.json')
+           // Use the full GitHub raw file URL
+           const jsonUrl = 'https://raw.githubusercontent.com/siddhant-07/Homepage/main/shortcuts.json';
+
+           fetch(jsonUrl)
             .then(response => {
               if (!response.ok) {
                 throw new Error('Network response was not ok');
