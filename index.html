@@ -1125,31 +1125,16 @@ Replace "rename" with your desired container name.
 
         document.addEventListener('DOMContentLoaded', setupSearchEvents);
         setupSearchEvents();
-    
-        function loadShortcuts() {
-          const fallbackShortcuts = {
-            "tools": [
-              {
-                "name": "GitHub",
-                "url": "https://github.com",
-                "icon": "https://www.google.com/s2/favicons?sz=64&domain=github.com"
-              }
-            ]
-          };
 
+        function loadShortcuts() {
           fetch('shortcuts.json')
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
               Object.keys(data).forEach(category => {
                 const container = document.getElementById(`${category}-container`);
                 if (container) {
                   container.innerHTML = '';
-  
+          
                   data[category].forEach(shortcut => {
                     const shortcutElement = createShortcutElement(shortcut);
                     container.appendChild(shortcutElement);
@@ -1159,19 +1144,8 @@ Replace "rename" with your desired container name.
             })
             .catch(error => {
               console.error('Error loading shortcuts:', error);
-              Object.keys(fallbackShortcuts).forEach(category => {
-                const container = document.getElementById(`${category}-container`);
-                if (container) {
-                  container.innerHTML = '';
-  
-                  fallbackShortcuts[category].forEach(shortcut => {
-                    const shortcutElement = createShortcutElement(shortcut);
-                    container.appendChild(shortcutElement);
-                  });
-                }
-              });
             });
-        }
+	}
 
         function createShortcutElement(shortcut) {
           const shortcutDiv = document.createElement('div');
